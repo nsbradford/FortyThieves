@@ -5,9 +5,14 @@ import ks.common.model.Card;
 import ks.common.model.Column;
 import ks.common.model.Deck;
 import ks.launcher.Main;
-
 import org.junit.Test;
 
+/**
+ * Runs tests on MoveColumnToColumn, both doMove and undo.
+ * 
+ * @author Nicholas
+ *
+ */
 public class TestMoveColumnToColumn {
 
 	@Test
@@ -40,7 +45,16 @@ public class TestMoveColumnToColumn {
 		// second case
 		MoveColumnToColumn myMove2 = 
 				new MoveColumnToColumn(fortyThieves.column[1], fortyThieves.column[2], null, 1);
+		
 		myMove2.doMove(fortyThieves);
+		assertEquals(topCard, fortyThieves.column[2].peek());
+		assertEquals(4, fortyThieves.column[1].count());
+		assertEquals(6, fortyThieves.column[2].count());
+		
+		myMove.undo(fortyThieves);
+		assertEquals(topCard, fortyThieves.column[1].peek());
+		assertEquals(5, fortyThieves.column[1].count());
+		assertEquals(5, fortyThieves.column[2].count());
 		
 	}
 }

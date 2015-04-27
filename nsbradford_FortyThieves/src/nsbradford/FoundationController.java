@@ -1,6 +1,5 @@
 package nsbradford;
 
-
 import java.awt.event.MouseEvent;
 import ks.common.model.Card;
 import ks.common.model.Column;
@@ -14,18 +13,22 @@ import ks.common.view.Widget;
 
 /**
  * Controls all actions to do with mouse events over Foundation Piles
- * <p>
- * Creation date: (11/10/01 11:51:49 PM)
- * @author: George T. Heineman (heineman@cs.wpi.edu)
+ * 
+ * @author: Nicholas
+ * 
  */
 public class FoundationController extends java.awt.event.MouseAdapter {
-	/** The Klondike Game. */
+	
+	/** The Solitaire Game. */
 	protected FortyThieves theGame;
 
-	/** The specific Foundation pileView being controlled. */
+	/** The specific Foundation PileView being controlled. */
 	protected PileView src;
+	
 	/**
-	 * FoundationController constructor comment.
+	 * Constructor.
+	 * @param theGame the Solitaire game currently being played.
+	 * @param foundation the source foundation's PileView.
 	 */
 	public FoundationController(FortyThieves theGame, PileView foundation) {
 		super();
@@ -82,7 +85,8 @@ public class FoundationController extends java.awt.event.MouseAdapter {
 			// see right now.
 			if (col.count() != 1) {
 				fromWidget.returnWidget (draggingWidget);  // return home
-			} else {
+			} 
+			else {
 				Move m = new MoveCardToFoundation (fromPile, col.peek(), foundation);
 
 				if (m.doMove (theGame)) {
@@ -111,24 +115,14 @@ public class FoundationController extends java.awt.event.MouseAdapter {
 			if (m.doMove (theGame)) {
 				// Success
 				theGame.pushMove (m);
-			} else {
+			} 
+			else {
 				fromWidget.returnWidget (draggingWidget);
 			}
 		}
 
-		// Ahhhh. Instead of dealing with multiple 'instanceof' difficulty, why don't we allow
-		// for multiple controllers to be set on the same widget? Each will be invoked, one
-		// at a time, until someone returns TRUE (stating that they are processing the event).
-		// Then we have controllers for each MOVE TYPE, not just for each entity. In this way,
-		// I wouldn't have to convert the CardView from wastePile into a ColumnView. I would
-		// still have to do some sort of instanceOf check, however, to validate: But if the
-		// instanceof failed, the controller could safely return and say NOT ME! See! There
-		// always is a way to avoid layered if statements in OO.
-
-		// release the dragging object, (this will reset dragSource)
+		// release the dragging object (this will reset dragSource)
 		c.releaseDraggingObject();
-		
-		// finally repaint
 		c.repaint();
 	}
 }

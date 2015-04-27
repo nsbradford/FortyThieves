@@ -23,52 +23,27 @@ import ks.common.view.Widget;
  * the wastePile; these controllers will be slightly more complicated, but the logic can
  * easily be localized, and <code>returnWidget</code> is not affected.
  * <p>
+ * @author Nicholas
+ *
  */
 public class WastePileController extends SolitaireReleasedAdapter {
 
+	/** The Solitaire game being played. */
 	protected FortyThieves theGame;
+	
+	/** The source PileView. */
 	protected PileView src;
 
+	/**
+	 * Constructor.
+	 * @param theGame The game being played.
+	 * @param waste The waste PileView.
+	 */
 	public WastePileController(FortyThieves theGame, PileView waste) {
 		super(theGame);
 	
 		this.theGame = theGame;
 		this.src = waste;
-	}
-		
-	/**
-	 * Try to play the faceup card directly to the foundation.
-	 * @param me java.awt.event.MouseEvent
-	 */
-	public void mouseClicked(MouseEvent me) {
-	/*
-		if(me.getClickCount() > 1) {
-	
-			// Point to our underlying model element.
-			Pile pile = (Pile) src.getModelElement();
-			
-			// See if we can move this one card.
-			boolean moveMade = false;
-			for (int f = 1; f <=4; f++) {
-				Pile fp = (Pile) theGame.getModelElement ("foundation" + f);
-				Move m = new MoveWasteToFoundationMove (pile, null, fp);
-				if (m.doMove(theGame)) {
-	
-					// Success! Add this move to our history.
-					theGame.pushMove (m);
-					
-					moveMade = true;
-					theGame.refreshWidgets();
-					break;
-				}
-			}
-			
-			if (!moveMade) {
-				java.awt.Toolkit.getDefaultToolkit().beep();
-				return; // announce our displeasure			
-			}
-		}
-		*/
 	}
 	
 	/**

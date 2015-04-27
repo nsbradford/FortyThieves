@@ -1,8 +1,6 @@
 package nsbradford;
 
-
 import java.awt.event.MouseEvent;
-
 import ks.common.model.Card;
 import ks.common.model.Column;
 import ks.common.model.Move;
@@ -13,10 +11,10 @@ import ks.common.view.Container;
 import ks.common.view.Widget;
 
 /**
- * Controls all actions to do with mouse events over the BuildablePile widget.
- * <p>
- * Creation date: (11/10/01 8:08:51 PM)
- * @author: George T. Heineman (heineman@cs.wpi.edu)
+ * Controls all actions to do with mouse events over the Column widget.
+ * 
+ * @author Nicholas
+ * 
  */
 public class ColumnController extends java.awt.event.MouseAdapter {
 
@@ -25,9 +23,12 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 
 	/** The src Column that initiated the event. */
 	protected ColumnView src;
-	
+
 	/**
-	 * Column constructor comment.
+	 * Constructor.
+	 * 
+	 * @param theGame the Solitaire game being played
+	 * @param bpv ColumnView widget being controlled
 	 */
 	public ColumnController(FortyThieves theGame, ColumnView bpv) {
 		super();
@@ -35,40 +36,7 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 		this.theGame = theGame;
 		this.src = bpv;
 	}
-	/**
-	 * Try to play the faceup card directly to the foundation.
-	 *
-	 * @param me java.awt.event.MouseEvent
-	 */
-	public void mouseClicked(MouseEvent me) {
-/*
-		if(me.getClickCount() > 1) {
-
-			// Point to our underlying model element.
-			Column theBP = (Column) (src.getModelElement());
-
-			// See if we can move this one card.
-			boolean moveMade = false;
-			for (int f = 0; f < 10; f++) {
-				Pile fp = (Pile) theGame.getModelElement ("foundation" + f);
-				Move m = new MoveCardToFoundation (theBP, null, fp);
-				if (m.doMove(theGame)) {
-
-					// Success! Add this move to our history.
-					theGame.pushMove (m);
-
-					moveMade = true;
-					theGame.refreshWidgets();
-					break;
-				}
-			}
-
-			if (!moveMade) {
-				java.awt.Toolkit.getDefaultToolkit().beep();
-				return; // announce our displeasure			
-			}
-		}*/
-	}
+	
 	/**
 	 * Coordinate reaction to the beginning of a Drag Event.
 	 *
@@ -77,8 +45,6 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 	 *       be held and dragged. Only mouseReleased will be able to 
 	 *       help us out with that one.
 	 *
-	 * Creation date: (10/4/01 6:05:55 PM)
-	 * @param pv ks.common.view.PileView
 	 * @param me java.awt.event.MouseEvent
 	 */
 	public void mousePressed(MouseEvent me) {
@@ -94,22 +60,6 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 			return;
 		}
 
-		// No Face Up cards means that we must be requesting to flip a card.
-		// If we get here, we must have some cards in the BuildablePile
-		/*
-		if (theBP.getNumFaceUp() == 0) {
-			Move m = new FlipCardMove (theBP);
-			if (m.doMove(theGame)) {
-				theGame.pushMove (m);
-				theGame.refreshWidgets();
-			} else {
-				// error in flip card. Not sure what to do
-				System.err.println ("BuildablePileController::mousePressed(). Unexpected failure in flip card.");
-			}
-			return;
-		}
-		*/
-
 		// Get a column of cards to move from the ColumnView
 		// Note that this method will alter the model for ColumnView if the condition is met.
 		ColumnView colView = src.getColumnView (me);
@@ -122,7 +72,7 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 		// Check conditions
 		Column srcColView = (Column) colView.getModelElement();
 		if (srcColView == null) {
-			System.err.println ("BuildablePileController::mousePressed(): Unexpectedly encountered a ColumnView with no Column.");
+			System.err.println ("ColumnController::mousePressed(): Unexpectedly encountered a ColumnView with no Column.");
 			return; // sanity check, but should never happen.
 		}
 
@@ -138,7 +88,7 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 		// cardView widget reflect the original card location on the screen.
 		Widget w = c.getActiveDraggingObject();
 		if (w != Container.getNothingBeingDragged()) {
-			System.err.println ("BuildablePileController::mousePressed(): Unexpectedly encountered a Dragging Object during a Mouse press.");
+			System.err.println ("ColumnController::mousePressed(): Unexpectedly encountered a Dragging Object during a Mouse press.");
 			return;
 		}
 
@@ -152,16 +102,18 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 		// rather than refreshing all widgets...
 		src.redraw();
 	}
+	
 	/**
 	 * Coordinate reaction to the completion of a Drag Event.
 	 * <p>
 	 * A bit of a challenge to construct the appropriate move, because cards
 	 * can be dragged both from the WastePile (as a CardView widget) and the 
-	 * BuildablePileView (as a ColumnView widget).
+	 * ColumnView (as a ColumnView widget).
 	 * <p>
 	 * @param me java.awt.event.MouseEvent
 	 */
 	public void mouseReleased(MouseEvent me) {
+		
 		Container c = theGame.getContainer();
 
 		/** Return if there is no card being dragged chosen. */
@@ -174,7 +126,7 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 		/** Recover the from BuildablePile OR waste Pile */
 		Widget fromWidget = c.getDragSource();
 		if (fromWidget == null) {
-			System.err.println ("BuildablePileController::mouseReleased(): somehow no dragSource in container.");
+			System.err.println ("ColumnController::mouseReleased(): somehow no dragSource in container.");
 			c.releaseDraggingObject();
 			return;
 		}
@@ -187,7 +139,7 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 			ColumnView columnView = (ColumnView) w;
 			Column col = (Column) columnView.getModelElement();
 			if (col == null) {
-				System.err.println ("BuildablePileController::mouseReleased(): somehow ColumnView model element is null.");
+				System.err.println ("ColumnController::mouseReleased(): somehow ColumnView model element is null.");
 				return;
 			}
 
@@ -212,7 +164,7 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 			CardView cardView = (CardView) w;
 			Card theCard = (Card) cardView.getModelElement();
 			if (theCard == null) {
-				System.err.println ("BuildablePileController::mouseReleased(): somehow CardView model element is null.");
+				System.err.println ("ColumnController::mouseReleased(): somehow CardView model element is null.");
 				return;
 			}
 
@@ -226,9 +178,9 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 				wastePile.add (theCard);
 			}
 		}
-// release the dragging object, (container will reset dragSource)
-		c.releaseDraggingObject();
 		
+		// release the dragging object, (container will reset dragSource)
+		c.releaseDraggingObject();
 		c.repaint();
 	}
 }

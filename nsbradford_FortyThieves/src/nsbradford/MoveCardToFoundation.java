@@ -5,15 +5,16 @@ import ks.common.model.Card;
 import ks.common.model.Column;
 import ks.common.model.Pile;
 
-
 /**
  * Represents the move of a card to the Foundation from a Column
- * @author: George T. Heineman (heineman@cs.wpi.edu)
+ * 
+ * @author Nicholas
+ *
  */
 public class MoveCardToFoundation extends ks.common.model.Move {
 	
-	/** The BuildablePile. */
-	protected Column buildablePile;
+	/** The source Column. */
+	protected Column srcCol;
 
 	/** The card being dragged (if at all). */
 	protected Card draggingCard;
@@ -22,21 +23,21 @@ public class MoveCardToFoundation extends ks.common.model.Move {
 	protected Pile foundation;
 	
 	/**
-	 * MoveCardToFoundationmove constructor comment.
+	 * Constructor.
+	 * @param bp The source Column.
+	 * @param card The card being dragged (if at all).
+	 * @param foundation The destination Foundation Pile.
 	 */
 	public MoveCardToFoundation(Column bp, Card card, Pile foundation) {
 		super();
 	
-		buildablePile = bp;
+		srcCol = bp;
 		this.draggingCard = card;
 		this.foundation = foundation;
 	}
 	
 	/**
 	 * Each move should knows how to execute itself.
-	 * <p>
-	 * @param ks.game.Solitaire   the game being played.
-	 * @return boolean
 	 */
 	public boolean doMove (Solitaire theGame) {
 		// VALIDATE (should we also check for validitation by rank? suit?
@@ -46,7 +47,7 @@ public class MoveCardToFoundation extends ks.common.model.Move {
 		// EXECUTE:
 		// Deal with both situations
 		if (draggingCard == null)
-			foundation.add (buildablePile.get());
+			foundation.add (srcCol.get());
 		else
 			foundation.add (draggingCard);
 	
@@ -56,14 +57,14 @@ public class MoveCardToFoundation extends ks.common.model.Move {
 	}
 	
 	/**
-	 * undo method.
+	 * Undo method.
 	 */
 	public boolean undo(Solitaire game) {
 		// VALIDATE:
 		if (foundation.empty()) return false;
 	
 		// EXECUTE UNDO:	
-		buildablePile.add (foundation.get());
+		srcCol.add (foundation.get());
 	
 		// reverse score advance
 		game.updateScore (-1);
@@ -71,7 +72,7 @@ public class MoveCardToFoundation extends ks.common.model.Move {
 	}
 	
 	/**
-	 * Action for Klondike: BuildablePile card draggged to Foundation Pile
+	 * Action for FortyThieves: Column card dragged to Foundation Pile
 	 * @param d ks.common.games.Solitaire
 	 */
 	public boolean valid(ks.common.games.Solitaire game) {
@@ -81,11 +82,11 @@ public class MoveCardToFoundation extends ks.common.model.Move {
 		// If draggingCard is null, then no action has yet taken place.
 		if (draggingCard == null) {
 			// moveWasteToFoundation(buildablePile,pile) : not foundation.empty() and not buildablePile.empty() and 
-			if (!foundation.empty() && !buildablePile.empty() && (buildablePile.rank() == foundation.rank() + 1) && (buildablePile.suit() == foundation.suit()))
+			if (!foundation.empty() && !srcCol.empty() && (srcCol.rank() == foundation.rank() + 1) && (srcCol.suit() == foundation.suit()))
 				validation = true;
 	
 			// moveWasteToFoundation(buildablePile,pile) : foundation.empty() and not buildablePile.empty() and waste.rank() == ACE
-			if (foundation.empty() && !buildablePile.empty() && buildablePile.rank() == Card.ACE)
+			if (foundation.empty() && !srcCol.empty() && srcCol.rank() == Card.ACE)
 				validation = true;  
 		} else {
 			// the action must have taken place, so act on the card.

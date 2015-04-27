@@ -4,9 +4,14 @@ import static org.junit.Assert.*;
 import ks.common.model.Card;
 import ks.common.model.Deck;
 import ks.launcher.Main;
-
 import org.junit.Test;
 
+/**
+ * Runs tests on MoveWasteToColumn, both doMove and undo.
+ * 
+ * @author Nicholas
+ *
+ */
 public class TestMoveWasteToColumn {
 
 	@Test

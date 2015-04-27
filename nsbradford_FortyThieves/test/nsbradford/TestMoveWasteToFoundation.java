@@ -4,9 +4,14 @@ import static org.junit.Assert.*;
 import ks.common.model.Card;
 import ks.common.model.Deck;
 import ks.launcher.Main;
-
 import org.junit.Test;
 
+/**
+ * Runs tests on MoveWasteToFoundation, both doMove and undo.
+ * 
+ * @author Nicholas
+ *
+ */
 public class TestMoveWasteToFoundation {
 
 	@Test
@@ -19,7 +24,6 @@ public class TestMoveWasteToFoundation {
 		MoveWasteToFoundation cardToFoundation = 
 				new MoveWasteToFoundation(fortyThieves.wastePile, topCard, fortyThieves.foundationPile[1]);
 	
-		// fortyThieves.column[1].get()
 		assertTrue(cardToFoundation.valid(fortyThieves));
 		
 		cardToFoundation.doMove(fortyThieves);

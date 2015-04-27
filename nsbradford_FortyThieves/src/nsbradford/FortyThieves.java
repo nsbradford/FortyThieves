@@ -1,7 +1,6 @@
 package nsbradford;
 
 import java.awt.Dimension;
-
 import ks.common.controller.SolitaireMouseMotionAdapter;
 import ks.common.controller.SolitaireReleasedAdapter;
 import ks.common.games.Solitaire;
@@ -24,17 +23,40 @@ import ks.launcher.Main;
  */
 public class FortyThieves extends Solitaire {
 
+	/** Number of foundation Pile objects. */
 	int numFoundations = 8;
+	
+	/** Number of tableau Column objects. */
 	int numColumns = 10;
+	
+	/** The two-deck MultiDeck. */
 	MultiDeck deck;
+	
+	/** The Waste Pile. */
 	Pile wastePile;
+	
+	/** The foundation Pile objects. */
 	Pile foundationPile[] = new Pile[numFoundations];
+	
+	/** The tableau Column objects. */
 	Column column[] = new Column[numColumns];
+	
+	/** The view for the deck. */
 	DeckView deckView;
+	
+	/** The view for the waste Pile. */
 	PileView wastePileView;
+	
+	/** The view for the foundation Pile objects. */
 	PileView foundationPileView[] = new PileView[numFoundations];
+	
+	/** The view for the tableau Column objects. */
 	ColumnView columnView[] = new ColumnView[numColumns];
+	
+	/** The view for the game score. */
 	protected IntegerView scoreView;
+	
+	/** The view for the number of cards remaining in the deck. */
 	protected IntegerView numRemainingView;
 
 	/**
@@ -46,6 +68,7 @@ public class FortyThieves extends Solitaire {
 			System.out.println("No Idea what went wrong");*/
 	}
 	
+
 	@Override
 	public String getName() {
 		if (hasWon())
@@ -65,9 +88,7 @@ public class FortyThieves extends Solitaire {
 		return getScoreValue() == 104;
 	}
 
-	/**
-	 * 
-	 */
+
 	@Override
 	public void initialize() {
 		// initialize model
@@ -159,7 +180,7 @@ public class FortyThieves extends Solitaire {
 	}
 
 	/**
-	 * 
+	 * Initializes all controller objects, and assigns them to their respective Views.
 	 */
 	private void initializeController() {
 		// Initialize Controllers for DeckView
@@ -202,24 +223,13 @@ public class FortyThieves extends Solitaire {
 		getContainer().setUndoAdapter (new SolitaireUndoAdapter(this));
 	}
 	
-	/**
-	 * Returns the preferred size needed for this solitaire game to function.
-	 * <p>
-	 * Each subclass should override this method if more space is needed
-	 * initially when the solitaire version is initialized.
-	 * <p>
-	 * The default value returned is (769, 635).
-	 * 
-	 * @return java.awt.Dimension the desired dimension of the game.
-	 */
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(970, 850);
 	}
 	
 	/**
-	 * 
-	 * @param args
+	 * Main function to run when playing Forty Thieves.
 	 */
 	public static void main(String[] args){
 		Main.generateWindow(new FortyThieves(), Deck.OrderBySuit);

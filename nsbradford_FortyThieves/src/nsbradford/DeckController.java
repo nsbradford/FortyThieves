@@ -5,6 +5,12 @@ import ks.common.model.Deck;
 import ks.common.model.Move;
 import ks.common.model.Pile;
 
+/**
+ * Controls all actions to do with mouse events over the DeckView widget.
+ * 
+ * @author Nicholas
+ *
+ */
 public class DeckController extends SolitaireReleasedAdapter {
 
 	protected FortyThieves theGame;
@@ -21,7 +27,7 @@ public class DeckController extends SolitaireReleasedAdapter {
 
 	/**
 	 * Coordinate reaction to the beginning of a Drag Event. In this case,
-	 * no drag is ever achieved, and we simply deal upon the pres.
+	 * no drag is ever achieved, and we simply deal upon the press.
 	 */
 	public void mousePressed (java.awt.event.MouseEvent me) {
 
